@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 199 89% 32%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 154 40% 93%;
+  --secondary-foreground: 163 88% 20%;
+  --muted: 210 30% 94%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 15 83% 92%;
+  --accent-foreground: 15 82% 30%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 87%;
+  --input: 214 32% 87%;
+  --ring: 199 89% 32%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 220 23% 9%;
+  --foreground: 210 40% 98%;
+  --card: 220 21% 12%;
+  --card-foreground: 210 40% 98%;
+  --popover: 220 21% 12%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 187 74% 45%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 170 28% 18%;
+  --secondary-foreground: 166 75% 82%;
+  --muted: 220 17% 18%;
+  --muted-foreground: 215 20% 70%;
+  --accent: 20 50% 20%;
+  --accent-foreground: 24 94% 82%;
+  --destructive: 0 63% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 15% 22%;
+  --input: 220 15% 22%;
+  --ring: 187 74% 45%;
+}
+
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  letter-spacing: 0;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.fc {
+  --fc-border-color: hsl(var(--border));
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: hsl(var(--muted));
+  --fc-today-bg-color: color-mix(in srgb, hsl(var(--primary)) 9%, transparent);
+  --fc-now-indicator-color: hsl(var(--destructive));
+  font-size: 0.875rem;
+}
+
+.fc .fc-scrollgrid,
+.fc .fc-theme-standard td,
+.fc .fc-theme-standard th {
+  border-color: hsl(var(--border));
+}
+
+.fc .fc-col-header-cell {
+  background: hsl(var(--card));
+  padding: 0.5rem 0;
+  font-weight: 600;
+}
+
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+  color: hsl(var(--foreground));
+  text-decoration: none;
+}
+
+.fc .fc-event {
+  border-radius: 6px;
+  border-width: 0;
+  padding: 1px 3px;
+  font-weight: 600;
+}
+
+.fc .activity-cancelled {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
+.fc .activity-completed {
+  opacity: 0.72;
+}
+
+.fc .activity-tentative {
+  border: 1px dashed currentColor;
+}
+
+.fc .holiday-event {
+  background: color-mix(in srgb, #f59e0b 25%, transparent) !important;
+  border: 1px solid color-mix(in srgb, #d97706 55%, transparent) !important;
+  color: #78350f !important;
+}
+
+.dark .fc .holiday-event {
+  color: #fde68a !important;
+}
+
+.fc .vacation-event {
+  background: color-mix(in srgb, #14b8a6 22%, transparent) !important;
+  border: 1px solid color-mix(in srgb, #0f766e 50%, transparent) !important;
+  color: #134e4a !important;
+}
+
+.dark .fc .vacation-event {
+  color: #99f6e4 !important;
+}
+
+.fc .fc-list {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+input[type="color"] {
+  padding: 0;
+}

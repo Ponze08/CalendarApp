@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Activity {
+  id                  String          @id @default(cuid())
+  title               String
+  description         String?
+  location            String?
+  start               DateTime
+  end                 DateTime
+  allDay              Boolean         @default(false)
+  color               String
+  status              String          @default("confirmed")
+  priority            String          @default("medium")
+  notes               String?
+  categoryId          String?
+  category            Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  reminders           Reminder[]
+  recurrenceRule      RecurrenceRule?
+  recurrenceParentId  String?
+  recurrenceParent    Activity?       @relation("ActivityRecurrenceOverrides", fields: [recurrenceParentId], references: [id], onDelete: Cascade)
+  recurrenceOverrides Activity[]      @relation("ActivityRecurrenceOverrides")
+  recurrenceDate      DateTime?
+  deletedOccurrence   Boolean         @default(false)
+  tags                Tag[]           @relation("ActivityTags")
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  @@index([start, end])
+  @@index([status])
+  @@index([categoryId])
+  @@index([recurrenceParentId])
+}
+
+model Category {
+  id         String     @id @default(cuid())
+  name       String     @unique
+  color      String
+  activities Activity[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Tag {
+  id         String     @id @default(cuid())
+  name       String     @unique
+  activities Activity[] @relation("ActivityTags")
+  createdAt  DateTime   @default(now())
+}
+
+model Reminder {
+  id          String   @id @default(cuid())
+  activityId  String
+  activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  offsetMinutes Int
+  label       String
+  custom      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([activityId])
+}
+
+model RecurrenceRule {
+  id         String   @id @default(cuid())
+  activityId String   @unique
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  frequency  String
+  interval   Int      @default(1)
+  weekdays   String?
+  monthDay   Int?
+  endType    String   @default("never")
+  until      DateTime?
+  count      Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model HolidayVacation {
+  id        String   @id @default(cuid())
+  name      String
+  type      String
+  canton    String   @default("TI")
+  country   String   @default("CH")
+  start     DateTime
+  end       DateTime
+  allDay    Boolean  @default(true)
+  source    String
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([start, end])
+  @@index([type])
+  @@index([enabled])
+}
+
+model UserSettings {
+  id                    String   @id @default("default")
+  timezone              String   @default("Europe/Zurich")
+  locale                String   @default("en-CH")
+  workingDays           String   @default("1,2,3,4,5")
+  workingStart          String   @default("08:00")
+  workingEnd            String   @default("18:00")
+  defaultView           String   @default("timeGridWeek")
+  theme                 String   @default("system")
+  showHolidays          Boolean  @default(true)
+  showSchoolVacations   Boolean  @default(true)
+  excludeHolidays       Boolean  @default(true)
+  excludeVacations      Boolean  @default(true)
+  browserNotifications  Boolean  @default(false)
+  updatedAt             DateTime @updatedAt
+}
